@@ -1,7 +1,9 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { UserEntity } from "../entity/user.entity"
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ApiException } from "../../common/exceptions/api.exception";
+import { Result } from "../../common/exceptions/api.result";
 import { IUserService } from "../interfaces/user-service.interface";
 import { v1 } from "uuid"
 
@@ -16,53 +18,80 @@ export class UsersService implements IUserService {
     }
 
 
-    async findAll(): Promise<UserEntity[]> {
-        return this.UerRepository.find();
+    async findAll(): Promise<Result> {
+        const UserList = await this.UerRepository.find();
+        return {
+            code: 200,
+            message: '查询成功',
+            data: {
+                length: UserList.length,
+                list: UserList
+            }
+        };
     }
-    async findOne(user_id: string): Promise<UserEntity> {
-        const user = this.UerRepository.findOne({ user_id });
+    async findOne(user_id: string): Promise<Result> {
+        const user = await this.UerRepository.findOne({ user_id: user_id });
         if (!user) {
-
-            throw new HttpException(`删除失败，ID 为 '${user_id}' 的用户不存在`, 404);
+            throw new ApiException('用户ID无效', 444, HttpStatus.BAD_REQUEST);
         } else {
-            return user;
+            return {
+                code: 1,
+                message: '',
+                data: user
+            };
         }
 
     }
-    async create(user: UserEntity): Promise<UserEntity> {
+    async create(user: UserEntity): Promise<Result> {
         // this.UerRepository.push(user);
         const time = new Date().getTime().toString();
-        console.log(time)
         user.user_id = v1();
         user.created_at = time;
         user.updated_at = time;
-        return await this.UerRepository.save(user);
+        return {
+            code: 1,
+            message: '',
+            data: await this.UerRepository.save(user)
+        };
     };
-    async edit(user: UserEntity): Promise<UserEntity> {
-        await this.findOne(user.user_id);
+    async edit(user: UserEntity): Promise<Result> {
+        const oldUser = await this.UerRepository.findOne({ user_id: user.user_id });
         // 更新数据时，删除 id，以避免请求体内传入 id
-        delete user.user_id;
+
+        if (!oldUser) {
+            throw new ApiException('用户ID无效', 444, HttpStatus.BAD_REQUEST);
+        }
         delete user.created_at;
-        user.updated_at = new Date().getTime().toString()
-        await this.UerRepository.update(user.user_id, user);
-        const Allreadadd = await this.UerRepository.findOne(user.user_id);
-        if (Allreadadd) {
-            return Allreadadd;
+        oldUser.updated_at = new Date().getTime().toString()
+        oldUser.name = user && user.name ? user.name.toString() : oldUser.name;
+        oldUser.age = user && user.age ? user.age : oldUser.age;
+        oldUser.we_uid = user && user.we_uid ? user.we_uid : oldUser.we_uid;
+        await this.UerRepository.save(oldUser);
+        const Allreadadd = await this.UerRepository.findOne({ user_id: oldUser.user_id });
+        if (!Allreadadd) {
+            throw new ApiException('更新失败', 444, HttpStatus.BAD_REQUEST);
         } else {
-            console.log(222)
+            return {
+                code: 200,
+                message: '更新成功',
+                data: Allreadadd
+            };
         }
 
     }
 
-    async remove(user_id: string): Promise<boolean> {
+    async remove(user_id: string): Promise<Result> {
         const user = await this.UerRepository.findOne(user_id);
         if (!user) {
-            console.log(111)
-            return false;
+            throw new ApiException('不存在此用户', 444, HttpStatus.BAD_REQUEST);
         } else {
             this.UerRepository.delete(user_id);
         }
-        return true;
+        return {
+            code: 200,
+            message: '删除成功',
+            data: ''
+        };
 
     }
 }

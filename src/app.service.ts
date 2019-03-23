@@ -6,7 +6,7 @@ import {ConfigService} from './config/config.service'
 export class AppService {
   constructor(config: ConfigService) {
     if (config) {
-      console.log(config)
+      // console.log(config)
       // Authorization is enabled
     }
   }

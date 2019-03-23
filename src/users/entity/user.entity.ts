@@ -4,17 +4,20 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  
+
   @Column()
   user_id: string;
 
-  @Column({ length: 50 })
+  @Column({
+    charset:'utf8mb4'
+  })
   name: string;
 
   @Column()
   age: number;
   
   @Column()
+ 
   we_uid: string;
   
   @Column()

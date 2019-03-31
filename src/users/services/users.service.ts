@@ -94,4 +94,20 @@ export class UsersService implements IUserService {
         };
 
     }
+    
+    async findOneByAccount(user_id: string): Promise<any> {
+        return await this.UerRepository.findOne(user_id);
+    }
+
+    async login(account: string, password: string): Promise<void|any> {
+        // const user = await this.findOneByAccount(account);
+        const user = await  this.UerRepository.findOne({ user_id: account });
+        if (!user) throw new ApiException('登录账号有误', 406, HttpStatus.BAD_REQUEST);
+
+        if(user.user_id==account&&user.name==password){
+            return 'success'
+        }else{
+            throw new ApiException('登录密码有误', 406, HttpStatus.BAD_REQUEST); 
+        }
+    }
 }

@@ -17,8 +17,13 @@ export class UserEntity {
   age: number;
   
   @Column()
- 
   we_uid: string;
+  
+  @Column({
+    default:'',
+    charset:'utf8mb4'
+  })
+  email: string;
   
   @Column()
   created_at: string;

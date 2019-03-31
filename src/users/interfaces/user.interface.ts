@@ -4,6 +4,7 @@ export interface User{
     readonly name:string;
     readonly age:number;
     readonly we_uid:string;
+    readonly email:string;
     readonly created_at:string;
     readonly updated_at:string;
 }

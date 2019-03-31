@@ -30,6 +30,10 @@ export class EditUserDto implements User {
     @IsNotEmpty({ message: '微信uid是必不可少的', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
     readonly we_uid: string;
 
+    @Type(()=>String)
+    @IsEmpty({ message: 'email', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
+    readonly email: string;
+
     // @Type(()=>String)
     @IsEmpty({ message: '用户年龄必须是整数', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
     readonly created_at: string;

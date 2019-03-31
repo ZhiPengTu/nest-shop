@@ -1,7 +1,7 @@
 import { User } from "../interfaces/user.interface";
 import { Type } from "class-transformer";
 //类型验证
-import { IsString, IsInt, IsNotEmpty, Min, Max, IsEmpty } from 'class-validator';
+import { IsString, IsInt, IsNotEmpty, Min, Max, IsEmpty, IsEmail } from 'class-validator';
 //类型限制
 import { ApiErrorCode } from "../../common/enums/api-error-code.enum";
 
@@ -29,11 +29,14 @@ export class CreateUserDto implements User {
     @IsNotEmpty({ message: '微信uid是必不可少的', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
     readonly we_uid: string;
 
+    @Type(()=>String)
+    readonly email: string;
+
     // @Type(()=>String)
-    @IsEmpty({ message: '用户年龄必须是整数', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
+    @IsEmpty({ message: '创建时间', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
     readonly created_at: string;
     
     // @Type(()=>String)
-    @IsEmpty({ message: '用户年龄必须是整数', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
+    @IsEmpty({ message: '更新时间', context: { errorCode: ApiErrorCode.USER_AGE_INVALID } })
     readonly updated_at: string;
 }

@@ -48,7 +48,7 @@ $ npm run test:cov
 
 ## Support
 
-Nest英文文档，他可以帮助你更快的掌握这些技能。
+Nest英文文档，他可以帮助你更快的掌握这些技能。 [前往文档](https://docs.nestjs.com/support)
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## Stay in touch

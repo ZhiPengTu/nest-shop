@@ -1,3 +1,9 @@
+/*
+ * @Author: ZhiPengTu 
+ * @Date: 2019-09-05 15:41:10 
+ * @Last Modified by:   ZhiPengTu 
+ * @Last Modified time: 2019-09-05 15:41:10 
+ */
 import { Controller, Get, Param, Query, Post, Put, Delete, Body, UseGuards ,Inject} from '@nestjs/common';
 import { UsersService } from "./services/users.service";
 import { UserIdPipe } from "./pipes/user-id.pipe";
@@ -47,5 +53,4 @@ export class UsersController {
         //TODO:删除
         return await this.userservice.remove(id);
     }
-
 }

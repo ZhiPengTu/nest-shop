@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.moudule';
 import { UsersModule } from './users/users.module';
 import { GoodsModule } from './goods/goods.module';
+import { weixinModule } from './wexin/weixin.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {ConfigService} from './config/config.service';
 import * as Path from 'path';
@@ -29,7 +30,7 @@ const Orm = (): DynamicModule => {
 // console.log(Orm)
 
 @Module({
-  imports: [UsersModule,ConfigModule,Orm(),GoodsModule],
+  imports: [UsersModule,ConfigModule,Orm(),GoodsModule,weixinModule],
   controllers: [AppController],
   providers: [AppService],
 })
